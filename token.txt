@@ -1,0 +1,24 @@
+TOKEN: { kind: EQ  }
+TOKEN: { kind: INT value: 4 }
+TOKEN: { kind: ID id: b }
+TOKEN: { kind: EQ  }
+TOKEN: { kind: INT value: 5 }
+TOKEN: { kind: IF  }
+TOKEN: { kind: CLPAREN  }
+TOKEN: { kind: ID id: a }
+TOKEN: { kind: LT  }
+TOKEN: { kind: ID id: b }
+TOKEN: { kind: CRPAREN  }
+TOKEN: { kind: ID id: c }
+TOKEN: { kind: EQ  }
+TOKEN: { kind: INT value: 4 }
+TOKEN: { kind: WHILE  }
+TOKEN: { kind: CLPAREN  }
+TOKEN: { kind: ID id: d }
+TOKEN: { kind: GTE  }
+TOKEN: { kind: INT value: 4 }
+TOKEN: { kind: CRPAREN  }
+TOKEN: { kind: ID id: d }
+TOKEN: { kind: EQ  }
+TOKEN: { kind: INT value: 5 }
+TOKEN: { kind: EOF id: $ }

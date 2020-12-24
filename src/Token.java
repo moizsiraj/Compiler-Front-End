@@ -20,6 +20,10 @@ public class Token {
     public static final int NE = 17;
     public static final int N = 19;
     public static final int EQ = 18;
+    public static final int P =  20;
+    public static final int M =  21;
+    public static final int MU =  22;
+    public static final int D =  23;
 
     public Token(int kind, int intVal) {
         this.kind = kind;
@@ -63,7 +67,6 @@ public class Token {
             case 2:
                 str.append("INT");
                 break;
-
             case 6:
                 str.append("WHILE");
                 break;

@@ -48,14 +48,18 @@ public class scanner {
                     while (temp != '\n') {
                         temp = (char) filePointer.read();
                     }
+                    code.append(' ');
                 } else if (temp == '*') {
                     temp = (char) filePointer.read();
                     while (temp != '/') {
                         temp = (char) filePointer.read();
                     }
+                }else{
+                    code.append((char)r);
+                    code.append((char)temp);
                 }
             } else if (r == '\n') {
-                filePointer.read();
+                code.append(' ');
             } else if (r == '\r') {
                 filePointer.read();
             } else {
@@ -78,7 +82,7 @@ public class scanner {
             StringBuilder str = new StringBuilder();
             str.append(nextChar);
             getChar();
-            while (Character.isLetter(nextChar)) {
+            while (Character.isLetter(nextChar) || Character.isDigit(nextChar) || nextChar == '_') {
                 str.append(nextChar);
                 getChar();
                 while (Character.isLetter(nextChar) || Character.isDigit(nextChar) || nextChar == '_') {
@@ -160,6 +164,22 @@ public class scanner {
             return result;
         } else if (nextChar == ')') {
             result = new Token(Token.CRPAREN);
+            lastToken = result;
+            return result;
+        } else if (nextChar == '+') {
+            result = new Token(Token.P);
+            lastToken = result;
+            return result;
+        } else if (nextChar == '-') {
+            result = new Token(Token.M);
+            lastToken = result;
+            return result;
+        } else if (nextChar == '*') {
+            result = new Token(Token.MU);
+            lastToken = result;
+            return result;
+        } else if (nextChar == '/') {
+            result = new Token(Token.D);
             lastToken = result;
             return result;
         } else if (nextChar == '$') {

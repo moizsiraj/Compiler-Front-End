@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.Scanner;
 import java.util.Stack;
 
+import static java.lang.System.exit;
+
 public class parser {
     private int noOfStates;
     private int noOfTerminals;
@@ -62,6 +64,14 @@ public class parser {
                 return "(";
             case 11:
                 return ")";
+            case 20:
+                return "+";
+            case 21:
+                return "-";
+            case 22:
+                return "*";
+            case 23:
+                return "/";
             default:
                 return null;
         }
@@ -93,7 +103,7 @@ public class parser {
 
     private void populateTables() throws FileNotFoundException {
         //Scanner input = new Scanner(System.in);
-        File code = new File("C:\\Users\\moizs\\OneDrive\\Documents\\NetBeansProjects\\TinyJavaParser\\src\\parse file.txt");
+        File code = new File("C:\\Users\\moizs\\OneDrive\\Documents\\NetBeansProjects\\compilerFrontEnd\\parse file.txt");
         Scanner myReader = new Scanner(code);
         String str;
 //        System.out.println("Enter terminals in form \n" +
@@ -105,11 +115,11 @@ public class parser {
         }
         actionTable[0][2] = "\\(";
         actionTable[0][3] = "\\)";
-        actionTable[0][5] = "\\+";
-        actionTable[0][8] = "\\*";
-        actionTable[0][9] = "[a-zA-Z][a-zA-Z0-9_]*";
-        actionTable[0][10] = "0|[1-9][0-9]*";
-        actionTable[0][11] = "\\$";
+        actionTable[0][11] = "\\+";
+        actionTable[0][14] = "\\*";
+        actionTable[0][15] = "[a-zA-Z][a-zA-Z0-9_]*";
+        actionTable[0][16] = "0|[1-9][0-9]*";
+        actionTable[0][17] = "\\$";
 
 //        System.out.println("Enter non-terminals in form \n" +
 //                "<non-terminal 1> <non-terminal 2> <non-terminal 3>");
@@ -194,33 +204,37 @@ public class parser {
         stack.push("s1");
         String word = getToken();
         while (true) {
-            try {
-                String currentState = stack.peek();
-                int row = getRow(currentState);
-                int col = getCol(word, actionTable);
-                if (actionTable[row][col].charAt(0) == 's') {
-                    stack.push(word);
-                    stack.push(actionTable[row][col]);
-                    word = getToken();
-                } else if (actionTable[row][col].charAt(0) == 'r') {
-                    int ruleNo = getRow(actionTable[row][col]);
-                    int rowNo = ruleNo - 1;
-                    String LHS = productions[rowNo][0];
-                    String RHS = productions[rowNo][1];
-                    for (int i = 0; i < (RHS.length() * 2); i++) {
-                        stack.pop();
-                    }
-                    String newState = stack.peek();
-                    row = getRow(newState);
-                    col = getCol(LHS, gotoTable);
-                    stack.push(LHS);
-                    stack.push(gotoTable[row][col]);
-                } else if (actionTable[row][col].equals("acc")) {
-                    return "The code is valid";
+//            try {
+            String currentState = stack.peek();
+            int row = getRow(currentState);
+            int col = getCol(word, actionTable);
+            if (actionTable[row][col] == null) {
+                System.out.println("Invalid Syntax");
+                System.out.println("Error at \"" + word + "\"");
+                exit(0);
+            } else if (actionTable[row][col].charAt(0) == 's') {
+                stack.push(word);
+                stack.push(actionTable[row][col]);
+                word = getToken();
+            } else if (actionTable[row][col].charAt(0) == 'r') {
+                int ruleNo = getRow(actionTable[row][col]);
+                int rowNo = ruleNo - 1;
+                String LHS = productions[rowNo][0];
+                String RHS = productions[rowNo][1];
+                for (int i = 0; i < (RHS.length() * 2); i++) {
+                    stack.pop();
                 }
-            } catch (Exception e) {
-                return "The code is invalid";
+                String newState = stack.peek();
+                row = getRow(newState);
+                col = getCol(LHS, gotoTable);
+                stack.push(LHS);
+                stack.push(gotoTable[row][col]);
+            } else if (actionTable[row][col].equals("acc")) {
+                return "The code is valid";
             }
+//            } catch (Exception e) {
+//                return "The code is invalid";
+//            }
         }
     }
 }

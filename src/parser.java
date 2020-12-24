@@ -201,6 +201,7 @@ public class parser {
     private Stack<String> stack = new Stack<>();
 
     public String parse() {
+        String lastToken = "";
         stack.push("s1");
         String word = getToken();
         while (true) {
@@ -210,11 +211,12 @@ public class parser {
             int col = getCol(word, actionTable);
             if (actionTable[row][col] == null) {
                 System.out.println("Invalid Syntax");
-                System.out.println("Error at \"" + word + "\"");
+                System.out.println("Error at \"" + lastToken + "\"");
                 exit(0);
             } else if (actionTable[row][col].charAt(0) == 's') {
                 stack.push(word);
                 stack.push(actionTable[row][col]);
+                lastToken = word;
                 word = getToken();
             } else if (actionTable[row][col].charAt(0) == 'r') {
                 int ruleNo = getRow(actionTable[row][col]);

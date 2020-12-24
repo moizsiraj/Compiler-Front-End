@@ -1,5 +1,6 @@
-while ( temp <a b)
+while ( temp == b)
 if ( temp < b)
-temp = temp + 2
+temp = temp          +
+   a
 $
 

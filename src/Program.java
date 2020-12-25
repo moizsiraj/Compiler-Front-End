@@ -1,85 +1,97 @@
-abstract class Node{}
+abstract class Node {
+}
 
 public class Program extends Node {
     Statement statementNode;
-    public Program(Statement statementNode){
+
+    public Program(Statement statementNode) {
         this.statementNode = statementNode;
     }
 }
 
-class Statement extends Node{
+class Statement extends Node {
     Statement SNodeA;
     Statement SNodeB;
     AssignStatement assignStatement;
     IfStatement If;
     WhileStatement While;
 
-    public Statement(Statement SNode){
+    public Statement(Statement SNode) {
         this.SNodeA = SNode;
     }
-    public Statement(Statement SNodeA, Statement SNodeB){
+
+    public Statement(Statement SNodeA, Statement SNodeB) {
         this.SNodeA = SNodeA;
         this.SNodeB = SNodeB;
     }
-    public Statement(AssignStatement assignStatement){
+
+    public Statement(AssignStatement assignStatement) {
         this.assignStatement = assignStatement;
     }
-    public Statement(IfStatement If){
+
+    public Statement(IfStatement If) {
         this.If = If;
     }
-    public Statement(WhileStatement WhileStatement){
+
+    public Statement(WhileStatement WhileStatement) {
         this.While = WhileStatement;
     }
 }
 
 
-class AssignStatement extends Node{
+class AssignStatement extends Node {
     ID identifierNode;
     Equal equalNode;
     Expr expressionNode;
-    public AssignStatement(ID identifierNode, Equal equalNode, Expr expressionNode){
+
+    public AssignStatement(ID identifierNode, Equal equalNode, Expr expressionNode) {
         this.identifierNode = identifierNode;
         this.equalNode = equalNode;
         this.expressionNode = expressionNode;
     }
 }
 
-class Equal extends Node{
+class Equal extends Node {
     String name;
-    public Equal(){
+
+    public Equal() {
         this.name = "=";
     }
 }
 
-class IfStatement extends Node{
+class IfStatement extends Node {
     CompareStatement compareStatement;
     Statement statement;
-    public IfStatement(CompareStatement compareStatement, Statement statement){
+
+    public IfStatement(CompareStatement compareStatement, Statement statement) {
         this.compareStatement = compareStatement;
         this.statement = statement;
     }
 }
 
-class WhileStatement extends Node{
+class WhileStatement extends Node {
     CompareStatement compareStatement;
     Statement statement;
-    public WhileStatement(CompareStatement compareStatement, Statement statement){
+
+    public WhileStatement(CompareStatement compareStatement, Statement statement) {
         this.compareStatement = compareStatement;
         this.statement = statement;
     }
 }
 
-class CompareStatement extends Node{ //Y
+class CompareStatement extends Node { //Y
     ID idA;
     CompOp compOp;
     Number number;
     ID idB;
-    public CompareStatement(ID idA, CompOp compOp, Number number){
+
+    public CompareStatement(ID idA, CompOp compOp, Number number) {
         this.idA = idA;
         this.compOp = compOp;
         this.number = number;
     }
-    public CompareStatement(ID idA, CompOp compOp, ID idB){
+
+    public CompareStatement(ID idA, CompOp compOp, ID idB) {
         this.idA = idA;
         this.compOp = compOp;
         this.idB = idB;
@@ -88,69 +100,103 @@ class CompareStatement extends Node{ //Y
 }
 
 
-class CompOp extends Node{
+class CompOp extends Node {
     String name;
-    public CompOp(String name){
-        this.name=name;
+
+    public CompOp(String name) {
+        this.name = name;
     }
 }
 
-class Expr extends Node{
+class Expr extends Node {
     Expr expr;
-    Equal equal;
+    OperationA operation;
     Term term;
-    public Expr(Expr expr, Equal equal, Term term){
+
+    public Expr(Expr expr, OperationA operation, Term term) {
         this.expr = expr;
-        this.equal = equal;
+        this.operation = operation;
         this.term = term;
     }
-    public Expr(Term term){
+
+    public Expr(Term term) {
         this.term = term;
     }
 }
 
-class Operation extends Node{
+class OperationA extends Node {
     String operator;
-    public Operation(String operator){
+
+    public OperationA(String operator) {
         this.operator = operator;
     }
 }
 
-class Term extends Node{
+class OperationB extends Node {
+    String operator;
+
+    public OperationB(String operator) {
+        this.operator = operator;
+    }
+}
+
+class Term extends Node {
     Term term;
-    Operation operation;
+    OperationB operation;
     Factor factor;
-    public Term(Term term, Operation operation, Factor factor){
+
+    public Term(Term term, OperationB operation, Factor factor) {
         this.term = term;
         this.operation = operation;
         this.factor = factor;
     }
-    public Term(Factor factor){
+
+    public Term(Factor factor) {
         this.factor = factor;
     }
 }
 
-class Factor extends Node{
+class Factor extends Node {
     Expr expr;
     ID id;
-    public Factor(Expr expr){
-        this.expr =expr;
+    Number number;
+
+    public Factor(Expr expr) {
+        this.expr = expr;
     }
-    public Factor(ID id){
+
+    public Factor(ID id) {
         this.id = id;
     }
-}
 
-class Number extends Node{
-    int number;
-    public Number(int number){
+    public Factor(Number number) {
         this.number = number;
     }
 }
 
-class ID extends Node{
+class Number extends Node {
+    int number;
+    public Number(int number) {
+        this.number = number;
+    }
+}
+
+class ID extends Node {
     String id;
-    public ID(String id){
+    public ID(String id) {
         this.id = id;
     }
 }
+
+class State extends Node {
+    private String state;
+    public State(String state) {
+        this.state = state;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+}
+

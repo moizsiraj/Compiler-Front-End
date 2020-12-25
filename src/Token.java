@@ -1,4 +1,4 @@
-public class Token {
+public class Token extends Node {
     private int kind; // token’s lexical class
     private int intVal; // integer value if class = INT
     private String id;// actual identifier if class = ID
@@ -20,10 +20,10 @@ public class Token {
     public static final int NE = 17;
     public static final int N = 19;
     public static final int EQ = 18;
-    public static final int P =  20;
-    public static final int M =  21;
-    public static final int MU =  22;
-    public static final int D =  23;
+    public static final int P = 20;
+    public static final int M = 21;
+    public static final int MU = 22;
+    public static final int D = 23;
 
     public Token(int kind, int intVal) {
         this.kind = kind;
@@ -33,6 +33,10 @@ public class Token {
 
     public Token(int kind, String id) {
         this.kind = kind;
+        this.id = id;
+    }
+
+    public void setId(String id) {
         this.id = id;
     }
 

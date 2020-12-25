@@ -70,7 +70,6 @@ public class Token {
             case 6:
                 str.append("WHILE");
                 break;
-
             case 8:
                 str.append("IF");
                 break;

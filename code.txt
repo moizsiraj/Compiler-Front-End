@@ -1,6 +1,6 @@
 while ( temp == b)
-if ( temp < b)
-temp = temp          +
-   a
+if ( temp <= bcacacaca)
+temp = temp         +
+a/2*ac
 $
 

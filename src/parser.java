@@ -12,8 +12,7 @@ public class parser {
     private int noOfNonTerminals;
     private int noOfProductions;
     private scanner Scanner;
-    private int currentToken;
-    private String[] token;
+    private Token token;
     private String[][] actionTable;
     private String[][] gotoTable;
     private String[][] productions;
@@ -24,7 +23,6 @@ public class parser {
         this.noOfTerminals = noOfTerminals;
         this.noOfNonTerminals = noOfNonTerminals;
         this.noOfProductions = noOfProductions;
-        currentToken = -1;
         actionTable = new String[this.noOfStates][this.noOfTerminals];
         gotoTable = new String[this.noOfStates][this.noOfNonTerminals];
         productions = new String[this.noOfProductions][2];
@@ -32,7 +30,7 @@ public class parser {
     }
 
     private String getToken() {
-        Token token = Scanner.getToken();
+        token = Scanner.getToken();
         switch (token.getKind()) {
             case 0:
                 return "$";
@@ -106,13 +104,15 @@ public class parser {
         File code = new File("C:\\Users\\moizs\\OneDrive\\Documents\\NetBeansProjects\\compilerFrontEnd\\parse file.txt");
         Scanner myReader = new Scanner(code);
         String str;
-//        System.out.println("Enter terminals in form \n" +
-//                "<terminal 1> <terminal 2> <terminal 3>");
+
+        //reading in terminals
         str = myReader.nextLine();
         String[] terminals = str.split("\t");
         for (int i = 0; i < actionTable[0].length; i++) {
             actionTable[0][i] = terminals[i];
         }
+
+        //fixing tables for matching regex
         actionTable[0][2] = "\\(";
         actionTable[0][3] = "\\)";
         actionTable[0][11] = "\\+";
@@ -121,16 +121,14 @@ public class parser {
         actionTable[0][16] = "0|[1-9][0-9]*";
         actionTable[0][17] = "\\$";
 
-//        System.out.println("Enter non-terminals in form \n" +
-//                "<non-terminal 1> <non-terminal 2> <non-terminal 3>");
+        //reading in non-terminals
         str = myReader.nextLine();
         String[] nonTerminals = str.split("\t");
         for (int i = 0; i < gotoTable[0].length; i++) {
             gotoTable[0][i] = nonTerminals[i];
         }
-//        System.out.println("Enter the transition for terminals in form \n" +
-//                "<state> <terminal> <transition> examples: 1 a s2, 1 a r3, 1 $ acc \n" +
-//                "input \"end\" when done");
+
+        //reading in transitions for action table
         str = myReader.nextLine();
         while (!str.equals("end")) {
             String[] values = str.split(" ");
@@ -147,9 +145,8 @@ public class parser {
             }
             str = myReader.nextLine();
         }
-//        System.out.println("Enter the transition for non-terminals in form \n" +
-//                "<state> <non-terminal> <transition> examples: 1 A g1, 3 B g8\n" +
-//                "input \"end\" when done");
+
+        //reading in transitions for goto table
         str = myReader.nextLine();
         while (!str.equals("end")) {
             String[] values = str.split(" ");
@@ -162,9 +159,8 @@ public class parser {
             gotoTable[row + 1][col] = String.valueOf(transition.charAt(0)) + index;
             str = myReader.nextLine();
         }
-//        System.out.println("Enter the production rules in form \n" +
-//                "<Right side> <Left side> examples: S aABe, A Abc\n" +
-//                "input \"end\" when done");
+
+        //reading in production rules
         str = myReader.nextLine();
         int index = 0;
         while (!str.equals("end")) {
@@ -205,7 +201,6 @@ public class parser {
         stack.push("s1");
         String word = getToken();
         while (true) {
-//            try {
             String currentState = stack.peek();
             int row = getRow(currentState);
             int col = getCol(word, actionTable);
@@ -234,9 +229,6 @@ public class parser {
             } else if (actionTable[row][col].equals("acc")) {
                 return "The code is valid";
             }
-//            } catch (Exception e) {
-//                return "The code is invalid";
-//            }
         }
     }
 }

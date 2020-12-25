@@ -102,9 +102,14 @@ class CompareStatement extends Node { //Y
 
 class CompOp extends Node {
     String name;
+    Equal equal;
 
     public CompOp(String name) {
         this.name = name;
+    }
+
+    public CompOp(Equal equal) {
+        this.equal = equal;
     }
 }
 
@@ -176,6 +181,7 @@ class Factor extends Node {
 
 class Number extends Node {
     int number;
+
     public Number(int number) {
         this.number = number;
     }
@@ -183,6 +189,7 @@ class Number extends Node {
 
 class ID extends Node {
     String id;
+
     public ID(String id) {
         this.id = id;
     }
@@ -190,6 +197,7 @@ class ID extends Node {
 
 class State extends Node {
     private String state;
+
     public State(String state) {
         this.state = state;
     }

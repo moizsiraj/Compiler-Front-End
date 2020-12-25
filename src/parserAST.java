@@ -9,7 +9,7 @@ import java.util.Stack;
 
 import static java.lang.System.exit;
 
-public class parserNode {
+public class parserAST {
     private int noOfStates;
     private int noOfTerminals;
     private int noOfNonTerminals;
@@ -20,7 +20,7 @@ public class parserNode {
     private String[][] gotoTable;
     private String[][] productions;
 
-    public parserNode(String location, int noOfStates, int noOfTerminals, int noOfNonTerminals, int noOfProductions) throws IOException {
+    public parserAST(String location, int noOfStates, int noOfTerminals, int noOfNonTerminals, int noOfProductions) throws IOException {
         this.Scanner = new scanner(location);
         this.noOfStates = noOfStates + 1;
         this.noOfTerminals = noOfTerminals;
@@ -287,13 +287,13 @@ public class parserNode {
             return new WhileStatement((CompareStatement) poppedNodes.get(1), (Statement) poppedNodes.get(0));
         } else if (LHS.equals("Y")) {
             if (poppedNodes.get(2) instanceof Number) {
-                return new CompareStatement((ID) poppedNodes.get(0), (CompOp) poppedNodes.get(1), (Number) poppedNodes.get(1));
+                return new CompareStatement((ID) poppedNodes.get(0), (CompOp) poppedNodes.get(1), (Number) poppedNodes.get(2));
             } else {
                 return new CompareStatement((ID) poppedNodes.get(0), (CompOp) poppedNodes.get(1), (ID) poppedNodes.get(2));
             }
         } else if (LHS.equals("C")) {
             if (poppedNodes.get(0) instanceof Equal) {
-                return new Equal();
+                return new CompOp((Equal) poppedNodes.get(0));
             } else {
                 Token check = (Token) poppedNodes.get(0);
                 switch (check.getID()) {

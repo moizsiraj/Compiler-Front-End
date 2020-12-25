@@ -1,5 +1,6 @@
-if(aa <= hello)
-if ( hello >= temp)
-temp = hello + } / 2 + my * temp         +
+
+while ( temp == b)
+if ( temp >= bcacacaca)
+temp = temp         +
 a/2*ac
 $

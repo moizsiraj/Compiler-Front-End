@@ -272,6 +272,9 @@ public class parserAST {
                 } else if (poppedNodes.get(0) instanceof WhileStatement) {
                     SNodeA = new Statement((WhileStatement) poppedNodes.get(0));
                     return SNodeA;
+                }else if (poppedNodes.get(0) instanceof AssignStatement) {
+                    SNodeA = new Statement((AssignStatement) poppedNodes.get(0));
+                    return SNodeA;
                 }
             } else {
                 SNodeA = new Statement((Statement) poppedNodes.get(0), (Statement) poppedNodes.get(1));

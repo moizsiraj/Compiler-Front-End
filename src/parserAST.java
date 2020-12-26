@@ -251,124 +251,129 @@ public class parserAST {
                 State NewState = new State(gotoTable[row][col]);
                 stack.push(NewState);
             } else if (actionTable[row][col].equals("acc")) {
-                printTree(stack.elementAt(1),"", true);
+                printTree(stack.elementAt(1), "", true);
                 return "The code is valid";
             }
         }
     }
 
     public Node InitiateNode(String LHS, ArrayList<Node> poppedNodes) {
-        if (LHS.equals("P")) {
-            return new Program((Statement) poppedNodes.get(0));
-        } else if (LHS.equals("S")) {
-            Statement SNodeA;
-            if (poppedNodes.size() == 1) {
-                if (poppedNodes.get(0) instanceof Statement) {
-                    SNodeA = new Statement((Statement) poppedNodes.get(0));
-                    return SNodeA;
-                } else if (poppedNodes.get(0) instanceof IfStatement) {
-                    SNodeA = new Statement((IfStatement) poppedNodes.get(0));
-                    return SNodeA;
-                } else if (poppedNodes.get(0) instanceof WhileStatement) {
-                    SNodeA = new Statement((WhileStatement) poppedNodes.get(0));
-                    return SNodeA;
-                } else if (poppedNodes.get(0) instanceof AssignStatement) {
-                    SNodeA = new Statement((AssignStatement) poppedNodes.get(0));
+        switch (LHS) {
+            case "P":
+                return new Program((Statement) poppedNodes.get(0));
+            case "S":
+                Statement SNodeA;
+                if (poppedNodes.size() == 1) {
+                    if (poppedNodes.get(0) instanceof Statement) {
+                        SNodeA = new Statement((Statement) poppedNodes.get(0));
+                        return SNodeA;
+                    } else if (poppedNodes.get(0) instanceof IfStatement) {
+                        SNodeA = new Statement((IfStatement) poppedNodes.get(0));
+                        return SNodeA;
+                    } else if (poppedNodes.get(0) instanceof WhileStatement) {
+                        SNodeA = new Statement((WhileStatement) poppedNodes.get(0));
+                        return SNodeA;
+                    } else if (poppedNodes.get(0) instanceof AssignStatement) {
+                        SNodeA = new Statement((AssignStatement) poppedNodes.get(0));
+                        return SNodeA;
+                    }
+                } else {
+                    SNodeA = new Statement((Statement) poppedNodes.get(0), (Statement) poppedNodes.get(1));
                     return SNodeA;
                 }
-            } else {
-                SNodeA = new Statement((Statement) poppedNodes.get(0), (Statement) poppedNodes.get(1));
-                return SNodeA;
-            }
-        } else if (LHS.equals("A")) {
-            return new AssignStatement((ID) poppedNodes.get(2), (Equal) poppedNodes.get(1), (Expr) poppedNodes.get(0));
-        } else if (LHS.equals("X")) {
-            return new Equal();
-        } else if (LHS.equals("L")) {
-            return new IfStatement((CompareStatement) poppedNodes.get(1), (Statement) poppedNodes.get(0));
-        } else if (LHS.equals("W")) {
-            return new WhileStatement((CompareStatement) poppedNodes.get(1), (Statement) poppedNodes.get(0));
-        } else if (LHS.equals("Y")) {
-            if (poppedNodes.get(2) instanceof Number) {
-                return new CompareStatement((ID) poppedNodes.get(0), (CompOp) poppedNodes.get(1), (Number) poppedNodes.get(2));
-            } else {
-                return new CompareStatement((ID) poppedNodes.get(0), (CompOp) poppedNodes.get(1), (ID) poppedNodes.get(2));
-            }
-        } else if (LHS.equals("C")) {
-            if (poppedNodes.get(0) instanceof Equal) {
-                return new CompOp((Equal) poppedNodes.get(0));
-            } else {
+                break;
+            case "A":
+                return new AssignStatement((ID) poppedNodes.get(2), (Equal) poppedNodes.get(1), (Expr) poppedNodes.get(0));
+            case "X":
+                return new Equal();
+            case "L":
+                return new IfStatement((CompareStatement) poppedNodes.get(1), (Statement) poppedNodes.get(0));
+            case "W":
+                return new WhileStatement((CompareStatement) poppedNodes.get(1), (Statement) poppedNodes.get(0));
+            case "Y":
+                if (poppedNodes.get(2) instanceof Number) {
+                    return new CompareStatement((ID) poppedNodes.get(0), (CompOp) poppedNodes.get(1), (Number) poppedNodes.get(2));
+                } else {
+                    return new CompareStatement((ID) poppedNodes.get(0), (CompOp) poppedNodes.get(1), (ID) poppedNodes.get(2));
+                }
+            case "C":
+                if (poppedNodes.get(0) instanceof Equal) {
+                    return new CompOp((Equal) poppedNodes.get(0));
+                } else {
+                    Token check = (Token) poppedNodes.get(0);
+                    switch (check.getID()) {
+                        case "<=":
+                            return new CompOp("<=");
+                        case "<":
+                            return new CompOp("<");
+                        case ">=":
+                            return new CompOp(">=");
+                        case ">":
+                            return new CompOp(">");
+                        case "==":
+                            return new CompOp("==");
+                        case "!=":
+                            return new CompOp("!=");
+                    }
+                }
+                break;
+            case "E":
+                if (poppedNodes.size() == 3) {
+                    return new Expr((Expr) poppedNodes.get(2), (OperationA) poppedNodes.get(1), (Term) poppedNodes.get(0));
+                } else {
+                    return new Expr((Term) poppedNodes.get(0));
+                }
+            case "O": {
                 Token check = (Token) poppedNodes.get(0);
                 switch (check.getID()) {
-                    case "<=":
-                        return new CompOp("<=");
-                    case "<":
-                        return new CompOp("<");
-                    case ">=":
-                        return new CompOp(">=");
-                    case ">":
-                        return new CompOp(">");
-                    case "==":
-                        return new CompOp("==");
-                    case "!=":
-                        return new CompOp("!=");
+                    case "+":
+                        return new OperationA("+");
+                    case "-":
+                        return new OperationA("-");
                 }
+                break;
             }
-        } else if (LHS.equals("E")) {
-            if (poppedNodes.size() == 3) {
-                return new Expr((Expr) poppedNodes.get(2), (OperationA) poppedNodes.get(1), (Term) poppedNodes.get(0));
-            } else {
-                return new Expr((Term) poppedNodes.get(0));
+            case "T":
+                if (poppedNodes.size() == 3) {
+                    return new Term((Term) poppedNodes.get(2), (OperationB) poppedNodes.get(1), (Factor) poppedNodes.get(0));
+                } else {
+                    return new Term((Factor) poppedNodes.get(0));
+                }
+            case "U": {
+                Token check = (Token) poppedNodes.get(0);
+                switch (check.getID()) {
+                    case "*":
+                        return new OperationB("*");
+                    case "/":
+                        return new OperationB("/");
+                }
+                break;
             }
-        } else if (LHS.equals("O")) {
-            Token check = (Token) poppedNodes.get(0);
-            switch (check.getID()) {
-                case "+":
-                    return new OperationA("+");
-                case "-":
-                    return new OperationA("-");
+            case "F":
+                if (poppedNodes.get(0) instanceof Expr) {
+                    return new Factor((Expr) poppedNodes.get(0));
+                } else if (poppedNodes.get(0) instanceof ID) {
+                    return new Factor((ID) poppedNodes.get(0));
+                } else {
+                    return new Factor((Number) poppedNodes.get(0));
+                }
+            case "I":
+            case "N": {
+                Token check = (Token) poppedNodes.get(0);
+                return new ID(check.getID());
             }
-        } else if (LHS.equals("T")) {
-            if (poppedNodes.size() == 3) {
-                return new Term((Term) poppedNodes.get(2), (OperationB) poppedNodes.get(1), (Factor) poppedNodes.get(0));
-            } else {
-                return new Term((Factor) poppedNodes.get(0));
-            }
-        } else if (LHS.equals("U")) {
-            Token check = (Token) poppedNodes.get(0);
-            switch (check.getID()) {
-                case "*":
-                    return new OperationB("*");
-                case "/":
-                    return new OperationB("/");
-            }
-        } else if (LHS.equals("F")) {
-            if (poppedNodes.get(0) instanceof Expr) {
-                return new Factor((Expr) poppedNodes.get(0));
-            } else if (poppedNodes.get(0) instanceof ID) {
-                return new Factor((ID) poppedNodes.get(0));
-            } else {
-                return new Factor((Number) poppedNodes.get(0));
-            }
-        } else if (LHS.equals("I")) {
-            Token check = (Token) poppedNodes.get(0);
-            return new ID(check.getID());
-        } else if (LHS.equals("N")) {
-            Token check = (Token) poppedNodes.get(0);
-            return new ID(check.getID());
         }
         return null;
     }
 
     public void printTree(Node node, String prefix, boolean last) {
         if (last) {
-            System.out.println(prefix + "`-" + node + "");
+            System.out.println(prefix + "->" + node + "");
             prefix = prefix + " ";
         } else {
-            System.out.println(prefix + "`-" + "|-" + node + "");
+            System.out.println(prefix + "->" + "|:" + node + "");
             prefix = prefix + " " + "| ";
         }
-
         if (node.children != null) {
             int count = node.children.size();
             for (int i = 0; i < count; i++) {

@@ -251,7 +251,7 @@ public class parserAST {
                 State NewState = new State(gotoTable[row][col]);
                 stack.push(NewState);
             } else if (actionTable[row][col].equals("acc")) {
-                printTree(stack.elementAt(1));
+                printTree(stack.elementAt(1),"", true);
                 return "The code is valid";
             }
         }
@@ -360,15 +360,21 @@ public class parserAST {
         return null;
     }
 
-    public void printTree(Node node) {
-        System.out.println(node);
+    public void printTree(Node node, String prefix, boolean last) {
+        if (last) {
+            System.out.println(prefix + "`-" + node + "");
+            prefix = prefix + " ";
+        } else {
+            System.out.println(prefix + "`-" + "|-" + node + "");
+            prefix = prefix + " " + "| ";
+        }
+
         if (node.children != null) {
             int count = node.children.size();
             for (int i = 0; i < count; i++) {
-                printTree(node.children.get(i));
+                last = i == count - 1;
+                printTree(node.children.get(i), prefix, last);
             }
         }
-
     }
-
 }

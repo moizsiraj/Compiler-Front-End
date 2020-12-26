@@ -251,13 +251,13 @@ public class parserAST {
                 State NewState = new State(gotoTable[row][col]);
                 stack.push(NewState);
             } else if (actionTable[row][col].equals("acc")) {
+                printTree(stack.elementAt(1));
                 return "The code is valid";
             }
         }
     }
 
     public Node InitiateNode(String LHS, ArrayList<Node> poppedNodes) {
-
         if (LHS.equals("P")) {
             return new Program((Statement) poppedNodes.get(0));
         } else if (LHS.equals("S")) {
@@ -272,7 +272,7 @@ public class parserAST {
                 } else if (poppedNodes.get(0) instanceof WhileStatement) {
                     SNodeA = new Statement((WhileStatement) poppedNodes.get(0));
                     return SNodeA;
-                }else if (poppedNodes.get(0) instanceof AssignStatement) {
+                } else if (poppedNodes.get(0) instanceof AssignStatement) {
                     SNodeA = new Statement((AssignStatement) poppedNodes.get(0));
                     return SNodeA;
                 }
@@ -359,4 +359,16 @@ public class parserAST {
         }
         return null;
     }
+
+    public void printTree(Node node) {
+        System.out.println(node);
+        if (node.children != null) {
+            int count = node.children.size();
+            for (int i = 0; i < count; i++) {
+                printTree(node.children.get(i));
+            }
+        }
+
+    }
+
 }
